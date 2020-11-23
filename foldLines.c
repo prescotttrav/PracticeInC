@@ -1,102 +1,79 @@
 #include <stdio.h>
 
-#define COLUMN_WIDTH 25
+#define COLUMN_LENGTH 25
 #define MAX_LINE 1000
 #define THREASHOLD 5
 
-
 int getLine(char s[]) {
-  printf("getLine");
   int c, i;
-  for (i = 0; i < MAX_LINE && (c = getchar()) != EOF && c != '\n'; ++i)
+  
+  for (i = 0; i < MAX_LINE - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
     s[i] = c;
   if (c == '\n')
     s[i++] = c;
   s[i] = '\0';
-  printf("Will return");
+
   return i;
 }
 
-int insertTab(char s[], int i) {
-  printf("insertTab");
-  while(i % 8 != 0) {
-    s[i++] = ' ';
+int getWordLength(char s[], int i) {
+  int len = 0;
+
+  while (s[i] != '\0') {
+    ++len;
+    if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t') {
+      break;
+    }
+    ++i;
   }
-  return i;
+
+  return len;
 }
 
-int nextWord(char s[], char w[], int i) {
-  printf("nextWord");
-  int j = 0;
-  while (s[i] != ' ' || s[i] != '\0' || s[i] != '\n' || s[i] != '\t') {
-    w[j++] = s[i++];
-  }
-  if (s[i] == ' ') {
-    w[j++] = s[i];
-  } else if (s[i] == '\n') {
-    w[j++] = '\n';
-  } else if (s[i] == '\t') {
-    j = insertTab(w, j);
-  }
-  w[j] = '\0';
-  return j;
-}
-
-int breakWord(char to[], char from[], int i, int start, int end) {
-  printf("breakWord");
-  int j;
-  for (j = start; j < end; ++j) {
-    to[j] = from[i++];
-  }
-  to[j++] = '\n';
-  to[j] = '\0';
-  return j;
+int breakLine(char from[], char to[], int i, int j, int n) {
+  int x;
+  for (x = n; x > 2; --x)
+    to[j++] = from[i++];
+  to[j] = '-';
+  return n - 2;
 }
 
 void foldLine(char s[]) {
-  printf("foldLine");
-  int total = 0;
-  int i = 0;
-  int k = 0;
-  int bufferSize = 0;
-  int remaining;
-  char newLine[COLUMN_WIDTH];
-  char bufferWord[COLUMN_WIDTH];
-  
+  int i, j, total, wordLength, removedLength;
+  char newLine[COLUMN_LENGTH];
+  i = j = total = 0;
+
   while (s[i] != '\0') {
-    bufferSize = nextWord(s, bufferWord, i);
-    if (total + bufferSize <= COLUMN_WIDTH) {
-      for (int j = 0; j < bufferSize; ++j) {
-        newLine[k++] = bufferWord[j];
+    wordLength = getWordLength(s, i);
+    if (total + wordLength <= COLUMN_LENGTH) {
+      for (int x = 0; x < wordLength; ++x) {
+        newLine[j++] = s[i + x];
       }
-      i += bufferSize;
-    } else if (COLUMN_WIDTH - total + bufferSize > 0 && COLUMN_WIDTH - total + bufferSize <= THREASHOLD) {
-      for (int j = 0; j < bufferSize; ++j) {
-        newLine[k++] = bufferWord[j];
-      }
-      i += bufferSize;
-      newLine[k++] = '\n';
-      total = 0;
-    } else if (total + bufferSize - COLUMN_WIDTH > 0 && total + bufferSize - COLUMN_WIDTH <= THREASHOLD) {
-      newLine[k++] = '\n';
-      total += 0;
+      i += wordLength;
+      total += wordLength;
     } else {
-      remaining = breakWord(newLine, bufferWord, 0, k, COLUMN_WIDTH - total - 1);
-      k += bufferSize - remaining;
-      i += k;
-      newLine[k++] = '\n';
-      total += 0;
+      if (COLUMN_LENGTH - total > THREASHOLD) {
+        removedLength = breakLine(s, newLine, i, j, COLUMN_LENGTH - total);
+        i += removedLength;
+        j += removedLength + 1;
+      }
+      newLine[j++] = '\n';
+      newLine[j] = '\0';
+      printf("%s", newLine);
+      j = 0;
+      total = 0;
     }
   }
+  if (newLine[j] != '\0')
+    newLine[j] = '\0';
   printf("%s", newLine);
 }
 
 int main() {
   int len;
   char line[MAX_LINE];
-
+  
   while ((len = getLine(line)) > 0) {
-    printf("here");
     foldLine(line);
   }
 
