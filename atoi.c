@@ -10,7 +10,6 @@ int atoi(char s[]) {
 }
 
 int main() {
-  int res;
   printf("Expected: 12345, Actual: %d\n", atoi("12345"));
   printf("Expected: 888, Actual: %d\n", atoi("888"));
   printf("Expected: 0, Actual: %d\n", atoi("0000"));
