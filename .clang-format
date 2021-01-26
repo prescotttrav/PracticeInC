@@ -5,9 +5,9 @@ AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-# AlwaysBreakAfterReturnType: All
 BreakBeforeBraces: Attach
 BreakBeforeTernaryOperators: true
+ColumnLimit: 0
 IndentCaseLabels: true
 IndentWidth: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
