@@ -5,8 +5,7 @@ int test(int actual, int expected) {
   if (actual != expected) {
     printf("Expected: %d, Actual: %d\n", expected, actual);
     return 0;
-  }
-  else
+  } else
     return 1;
 }
 

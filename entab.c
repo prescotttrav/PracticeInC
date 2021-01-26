@@ -26,10 +26,9 @@ void entab(char to[], char from[]) {
       while (k > 0) {
         to[n++] = whitespace;
         --k;
-      } 
+      }
       i = j;
-    }
-    else {
+    } else {
       to[n++] = c;
       ++i;
     }
@@ -41,15 +40,15 @@ void entab(char to[], char from[]) {
 int getLine(char line[]) {
   int c, i;
   for (i = 0; i < MAX_LINE && (c = getchar()) != EOF && c != '\n'; ++i)
-    line[i] = c; 
+    line[i] = c;
   if (c == '\n')
     line[i++] = c;
   line[i] = '\0';
-  
+
   return i;
 }
 
-int main () {
+int main() {
   int len;
   char line[MAX_LINE];
   char entabbedLine[MAX_LINE];

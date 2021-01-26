@@ -3,9 +3,8 @@
 int main() {
   long nc = 0;
 
-  while(getchar() != EOF)
+  while (getchar() != EOF)
     ++nc;
   printf("Num. chars: %ld\n", nc);
   return 0;
 }
-

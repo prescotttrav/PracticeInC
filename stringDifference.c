@@ -8,8 +8,7 @@ int test(char actual[], char expected[]) {
   if (diff) {
     printf("Expected: %s, Actual: %s\n", expected, actual);
     return 0;
-  }
-  else
+  } else
     return 1;
 }
 
@@ -24,7 +23,7 @@ int hasChar(char s[], int c) {
 
 void stringDifference(char s1[], char s2[]) {
   int c, i, j;
-  
+
   for (i = j = 0; (c = s1[i]) != '\0'; ++i) {
     if (!hasChar(s2, c))
       s1[j++] = s1[i];

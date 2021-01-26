@@ -9,9 +9,9 @@ char line[MAX_LINE];
 int getLine() {
   int i, c;
   extern char line[];
-  for (i = 0; i < MAX_LINE - 1 && (c = getchar()) != EOF && c != '\n'; ++i) 
+  for (i = 0; i < MAX_LINE - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
     line[i] = c;
-  if (c == '\n') 
+  if (c == '\n')
     line[i++] = c;
   line[i] = '\0';
   return i;
@@ -20,7 +20,7 @@ int getLine() {
 void copy() {
   int i = 0;
   extern char longest[], line[];
-  while ((longest[i] = line[i]) != '\0') 
+  while ((longest[i] = line[i]) != '\0')
     ++i;
 }
 

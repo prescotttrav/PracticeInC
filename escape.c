@@ -18,7 +18,6 @@ int escape(int c, int i, char word[]) {
   return i;
 }
 
-
 int main() {
   int c, i;
   char newWord[MAX_CHAR];

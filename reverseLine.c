@@ -15,7 +15,7 @@ void reverseLine(char from[], int size) {
   int i = 0;
   int j = size - 1;
   char rev[size];
-  
+
   while (j >= 0 && i < size) {
     rev[i++] = from[j--];
   }
@@ -27,7 +27,7 @@ void reverseLine(char from[], int size) {
 int main() {
   int len;
   char line[MAX_LINE];
-  
+
   while ((len = getLine(line)) != 0) {
     reverseLine(line, len);
   }

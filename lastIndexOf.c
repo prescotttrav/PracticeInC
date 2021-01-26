@@ -30,7 +30,7 @@ int main() {
   assert(lastIndexOf("totem", 't'), 2);
   assert(lastIndexOf("supercalifragilistic", 'i'), 18);
   assert(lastIndexOf("hello", 'w'), -1);
-  
+
   printf("%d / %d testcases passed\n", runs - flags, runs);
   return 0;
 }

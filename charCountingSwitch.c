@@ -21,7 +21,7 @@ int main() {
       case '8':
       case '9':
         ++ndigit[c - '0'];
-	break;
+        break;
       case ' ':
       case '\t':
       case '\n':

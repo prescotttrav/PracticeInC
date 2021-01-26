@@ -28,7 +28,7 @@ int main() {
   char line[MAX_LINE];
   char longest[MAX_LINE];
   char overflow[MAX_LINE * MAX_LINE];
-  
+
   while ((len = getLine(line, MAX_LINE)) != 0) {
     if (len > max) {
       max = len;
