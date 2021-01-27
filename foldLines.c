@@ -6,7 +6,7 @@
 
 int getLine(char s[]) {
   int c, i;
-  
+
   for (i = 0; i < MAX_LINE - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
     s[i] = c;
   if (c == '\n')
@@ -72,7 +72,7 @@ void foldLine(char s[]) {
 int main() {
   int len;
   char line[MAX_LINE];
-  
+
   while ((len = getLine(line)) > 0) {
     foldLine(line);
   }

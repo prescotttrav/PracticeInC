@@ -14,7 +14,7 @@ int main() {
       ++ndigit[c - '0'];
     else if (c == ' ' || c == '\n' || c == '\t')
       ++nwhite;
-    else 
+    else
       ++nother;
   }
 
@@ -26,4 +26,3 @@ int main() {
   printf("whitespace = %d, other = %d\n", nwhite, nother);
   return 0;
 }
-

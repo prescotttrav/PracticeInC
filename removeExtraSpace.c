@@ -3,10 +3,11 @@
 int main() {
   int c, cur;
   cur = 0;
-  
+
   while ((c = getchar()) != EOF) {
     if (c == ' ') {
-      if (cur < 1) putchar(c);
+      if (cur < 1)
+        putchar(c);
       ++cur;
     } else {
       cur = 0;
@@ -15,4 +16,3 @@ int main() {
   }
   return 0;
 }
-

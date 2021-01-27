@@ -3,7 +3,7 @@
 int main(int argc, char *argv[]) {
   int i, j, cur;
   int count[argc - 1];
-  
+
   i = 0;
   while (i < argc - 1) {
     cur = 0;

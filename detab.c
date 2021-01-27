@@ -8,7 +8,7 @@ int detab(int start, char line[]) {
   int mod = start % SPACES;
   if (mod == 0)
     end = start + SPACES;
-  else 
+  else
     end = SPACES - mod + start;
 
   for (int i = start; i < end; ++i)
@@ -31,14 +31,14 @@ int getLine(char line[]) {
     line[i++] = c;
   line[i] = '\0';
 
-  return i; 
+  return i;
 }
 
 int main() {
   int len;
   char line[MAX_LINE];
 
-  while ((len = getLine(line)) != 0) 
+  while ((len = getLine(line)) != 0)
     printf("%s", line);
 
   return 0;

@@ -40,7 +40,7 @@ double calculateArea(struct Rectangle rect) {
 
 _Bool rectEquality(struct Rectangle x, struct Rectangle y) {
   if (x.height != y.height)
-    return 0; 
+    return 0;
   else if (x.width != y.width)
     return 0;
   else if (x.perimeter != y.perimeter)
@@ -60,8 +60,12 @@ _Bool testcase() {
   testRect.perimeter = calculatePerimeter(testRect);
   testRect.area = calculateArea(testRect);
   if (!rectEquality(testRect, expectedRect)) {
-    printf("Failed test case, received height: %lf, width: %lf, perimeter: %lf, area: %lf", testRect.height, testRect.width, testRect.perimeter, testRect.area);
-    printf("Expected height: %lf, width: %lf, perimeter: %lf, area: %lf", expectedRect.height, expectedRect.width, expectedRect.perimeter, expectedRect.area);
+    printf("Failed test case, received height: %lf, width: %lf, perimeter: "
+           "%lf, area: %lf",
+           testRect.height, testRect.width, testRect.perimeter, testRect.area);
+    printf("Expected height: %lf, width: %lf, perimeter: %lf, area: %lf",
+           expectedRect.height, expectedRect.width, expectedRect.perimeter,
+           expectedRect.area);
     return 0;
   }
   return 1;

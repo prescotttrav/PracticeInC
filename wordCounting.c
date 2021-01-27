@@ -10,7 +10,7 @@ int main() {
 
   while ((c = getchar()) != EOF) {
     ++nc;
-    if (c == '\n') 
+    if (c == '\n')
       ++nl;
     if (c == '\n' || c == ' ' || c == '\t')
       state = OUT;
@@ -19,7 +19,7 @@ int main() {
       ++nw;
     }
   }
-  printf("Number characters: %d, number words: %d, number lines: %d\n", nc, nw, nl);
+  printf("Number characters: %d, number words: %d, number lines: %d\n", nc, nw,
+         nl);
   return 0;
 }
-

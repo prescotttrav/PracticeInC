@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   printf("Vertical Historgram\n");
   for (j = max; j > 0; j--) {
     for (i = 0; i < argc - 1; i++) {
-      if (count[i] >= j) 
+      if (count[i] >= j)
         printf(".\t");
       else
         printf("\t");
