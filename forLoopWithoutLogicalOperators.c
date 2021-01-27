@@ -15,13 +15,13 @@ int getLine(char s[]) {
     c = getchar();
     if (c == EOF)
       break;
-    else 
+    else
       s[i++] = c;
-    if (c == '\n') 
+    if (c == '\n')
       break;
   }
   s[i] = '\0';
-  
+
   return i;
 }
 

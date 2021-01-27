@@ -7,13 +7,13 @@ int main() {
   int alpha[26];
   int num[10];
   int i, j, c, white;
-  
+
   white = 0;
   for (i = 0; i < 26; i++) {
     if (i < 10)
       num[i] = 0;
     alpha[i] = 0;
-  } 
+  }
   while ((c = getchar()) != EOF) {
     if (c >= '0' && c <= '9')
       ++num[c - '0'];
@@ -32,7 +32,7 @@ int main() {
   }
   // Print alpha
   for (i = 0; i < 26; i++) {
-    printf("%c\t", (char)(i + TO_CHAR));
+    printf("%c\t", (char) (i + TO_CHAR));
     for (j = 0; j < alpha[i]; j++) {
       printf(".");
     }

@@ -4,7 +4,7 @@ int main() {
   int c;
 
   while ((c = getchar()) != EOF) {
-    switch(c) {
+    switch (c) {
       case '\t':
         putchar('\\');
         putchar('t');

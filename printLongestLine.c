@@ -28,7 +28,7 @@ int main() {
   int max = 0;
   char line[MAX_LINE];
   char longest[MAX_LINE];
-  
+
   while ((len = getLine(line, MAX_LINE)) != 0) {
     if (len > max) {
       max = len;
@@ -37,7 +37,7 @@ int main() {
   }
   if (max > 0) {
     printf("longest: %s", longest);
-  } 
- 
+  }
+
   return 0;
 }
