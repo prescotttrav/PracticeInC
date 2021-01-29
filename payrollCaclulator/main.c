@@ -46,14 +46,17 @@ float calculateCostAfterTaxes(float cost) {
 int main() {
   float hoursWorked, overtime, regularHours, cost;
 
+  // TODO unit test utilities
   //  if (!test())
   //    return -1;
 
+  // TODO return struct of regular hours & overtime
   hoursWorked = collectHours();
   overtime = determineOvertime(hoursWorked);
   regularHours = hoursWorked - overtime;
 
   cost = calculateCostBeforeTaxes(regularHours, overtime);
+  // TODO condense into one calculate cost utility
   cost = calculateCostAfterTaxes(cost);
 
   printf("cost: %.2f\n", cost);
