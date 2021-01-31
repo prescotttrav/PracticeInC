@@ -2,62 +2,84 @@
 #include <stdio.h>
 
 #define PAY_RATE 12
+#define STANDARD_WEEK_HOURS 40
 
-float collectHours() {
-  float hours;
-  printf("Enter hours worked this week: \n");
-  scanf("%f", &hours);
+typedef struct {
+  float regular, overtime;
+} HoursWorked;
 
-  return hours;
-}
-
-float determineOvertime(float totalHours) {
-  float overtime = totalHours - 40;
+float calculateOvertime(float totalHours) {
+  float overtime = totalHours - STANDARD_WEEK_HOURS;
 
   return overtime > 0 ? overtime : 0.0;
 }
 
-float calculateCostBeforeTaxes(float regularHours, float overtime) {
-  float cost = regularHours * PAY_RATE;
-  if (overtime > 0)
-    cost += overtime * (PAY_RATE + (PAY_RATE / 2));
+HoursWorked collectHoursWorked() {
+  HoursWorked hours;
+  printf("Enter total hours worked this week: \n");
+  scanf("%f", &hours.regular);
 
-  return cost;
+  hours.overtime = calculateOvertime(hours.regular);
+  hours.regular -= hours.overtime;
+
+  return hours;
 }
 
-float calculateCostAfterTaxes(float cost) {
-  float fifteen, twenty, twentyFive, value;
-  fifteen = twenty = twentyFive = 0;
+float calculateGrossPay(HoursWorked hours) {
+  float grossPay, overtimeHourlyRate;
+  overtimeHourlyRate = PAY_RATE + (PAY_RATE / 2);
+  grossPay = 0;
 
-  value = cost > 300 ? 300 : cost;
-  fifteen = value * 0.15;
+  grossPay += hours.regular * PAY_RATE;
+  grossPay += hours.overtime * overtimeHourlyRate;
+  return grossPay;
+}
 
-  if (cost > 300) {
-    value = cost - 300 > 150 ? 150 : cost - 150;
-    twenty = value * 0.2;
+float determineTaxCost(float value, float rate) {
+  return value * rate;
+}
+
+float calculateTaxes(float grossPay) {
+  float value, rate, taxes = 0;
+
+  for (int i = 0; i < 3 && grossPay > 0; i++) {
+    switch (i) {
+      case 0:
+        value = grossPay > 300 ? 300 : grossPay;
+        rate = 0.15;
+        break;
+      case 1:
+        value = grossPay > 150 ? 150 : grossPay;
+        rate = 0.20;
+        break;
+      case 2:
+        value = grossPay;
+        rate = 0.25;
+        break;
+    }
+    taxes += determineTaxCost(value, rate);
+    grossPay -= value;
   }
-  if (cost > 450) {
-    value = cost - 450;
-    twentyFive = value * 0.25;
-  }
-  return cost - fifteen - twenty - twentyFive;
+  return taxes;
 }
 
 int main() {
-  float hoursWorked, overtime, regularHours, cost;
+  HoursWorked payPeriod;
+  float grossPay, taxes, netPay;
 
   // TODO unit test utilities
   //  if (!test())
   //    return -1;
 
-  // TODO return struct of regular hours & overtime
-  hoursWorked = collectHours();
-  overtime = determineOvertime(hoursWorked);
-  regularHours = hoursWorked - overtime;
+  payPeriod = collectHoursWorked();
+  grossPay = calculateGrossPay(payPeriod);
+  taxes = calculateTaxes(grossPay);
+  netPay = grossPay - taxes;
 
-  cost = calculateCostBeforeTaxes(regularHours, overtime);
-  // TODO condense into one calculate cost utility
-  cost = calculateCostAfterTaxes(cost);
+  printf(
+      "Gross pay for this week: %.2f\nTaxes for this week: %.2f\nNet pay for "
+      "this week: %.2f\n",
+      grossPay, taxes, netPay);
 
-  printf("cost: %.2f\n", cost);
+  return 0;
 }
