@@ -1,12 +1,6 @@
+#include "main.h"
 #include "test.h"
 #include <stdio.h>
-
-#define PAY_RATE 12
-#define STANDARD_WEEK_HOURS 40
-
-typedef struct {
-  float regular, overtime;
-} HoursWorked;
 
 float calculateOvertime(float totalHours) {
   float overtime = totalHours - STANDARD_WEEK_HOURS;
@@ -67,9 +61,8 @@ int main() {
   HoursWorked payPeriod;
   float grossPay, taxes, netPay;
 
-  // TODO unit test utilities
-  //  if (!test())
-  //    return -1;
+  if (!test())
+    return -1;
 
   payPeriod = collectHoursWorked();
   grossPay = calculateGrossPay(payPeriod);
