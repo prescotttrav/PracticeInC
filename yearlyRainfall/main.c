@@ -148,7 +148,5 @@ int main() {
   calculateMonthlyAverage(2020, NUMBER_OF_RECORDS, data, monthlyAverages);
   displayMonthlyAverages(monthlyAverages);
 
-  printMatrix(data);
-
   return 0;
 }
