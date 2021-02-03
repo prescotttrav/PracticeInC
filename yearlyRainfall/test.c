@@ -5,7 +5,7 @@
 #include <string.h>
 
 _Bool floatEquality(float expected, float actual) {
-  int precision = 6;
+  int precision = 5;
   char exptectedStr[precision], acutalStr[precision];
 
   gcvt(expected, precision, exptectedStr);
@@ -15,11 +15,9 @@ _Bool floatEquality(float expected, float actual) {
 }
 
 _Bool arrayEquality(float expected[], float actual[], int n) {
-  float expectedVal, actualVal;
-
   for (int i = 0; i < n; ++i) {
-    expectedVal = expected[i];
-    actualVal = actual[i];
+    float expectedVal = expected[i];
+    float actualVal = actual[i];
     if (!floatEquality(expectedVal, actualVal)) {
       fprintf(stderr, "Error in testing filterAnnualData utility\n");
       printf("Expected: %f, received: %f\n", expectedVal, actualVal);
@@ -32,43 +30,43 @@ _Bool arrayEquality(float expected[], float actual[], int n) {
 void testFilterAnnualData(AnnualRainfall data[],
                           AnnualRainfall TWENTY_TWENTY_TEST_DATA,
                           AnnualRainfall TWENTY_EIGHTEEN_TEST_DATA) {
-  float actual[12], expected[12] = {[0 ... 11] = -1};
+  float actual[12] = {[0 ... 11] = -1};
+  float expected[12] = {[0 ... 11] = -1};
 
-  filterAnnualData(2020, data, actual);
-  if (!arrayEquality(TWENTY_TWENTY_TEST_DATA.rainfall, actual, 12))
+  filterAnnualData(1965, data, actual);
+  if (!arrayEquality(expected, actual, 12))
     exit(-1);
 
   filterAnnualData(2018, data, actual);
   if (!arrayEquality(TWENTY_EIGHTEEN_TEST_DATA.rainfall, actual, 12))
     exit(-1);
 
-  filterAnnualData(1965, data, actual);
-  if (!arrayEquality(expected, actual, 12))
+  filterAnnualData(2020, data, actual);
+  if (!arrayEquality(TWENTY_TWENTY_TEST_DATA.rainfall, actual, 12))
     exit(-1);
 }
 
-/*
-void testAnnualRainfall() {
+void testAnnualRainfall(AnnualRainfall data[]) {
   float annualExpected, annualActual;
 
-  annualExpected = ;
-  annualActual = calculateAnnualRainfall(2019);
+  annualExpected = 0.0;
+  annualActual = calculateAnnualRainfall(1995, data);
   if (!floatEquality(annualExpected, annualActual)) {
     fprintf(stderr, "Error in testing calculateAnnualRainfall utility\n");
     printf("Expected: %f, received: %f\n", annualExpected, annualActual);
     exit(-1);
   }
 
-  annualExpected = ;
-  annualActual = calculateAnnualRainfall(2016);
+  annualExpected = 62.403717;
+  annualActual = calculateAnnualRainfall(2019, data);
   if (!floatEquality(annualExpected, annualActual)) {
     fprintf(stderr, "Error in testing calculateAnnualRainfall utility\n");
     printf("Expected: %f, received: %f\n", annualExpected, annualActual);
     exit(-1);
   }
 
-  annualExpected = ;
-  annualActual = calculateAnnualRainfall(1995);
+  annualExpected = 65.110863;
+  annualActual = calculateAnnualRainfall(2016, data);
   if (!floatEquality(annualExpected, annualActual)) {
     fprintf(stderr, "Error in testing calculateAnnualRainfall utility\n");
     printf("Expected: %f, received: %f\n", annualExpected, annualActual);
@@ -76,27 +74,27 @@ void testAnnualRainfall() {
   }
 }
 
-void testAnnualAverage() {
+void testAnnualAverage(AnnualRainfall data[]) {
   float expected, actual;
 
-  expected = ;
-  actual = calculateAnnualAverage(2019, 2);
+  expected = 0.0;
+  actual = calculateAnnualAverage(1948, 3, data);
   if (!floatEquality(expected, actual)) {
     fprintf(stderr, "Error in testing calculateAnnualAverage utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
     exit(-1);
   }
 
-  expected = ;
-  actual = calculateAnnualAverage(2020, 5);
+  expected = 97.869766;
+  actual = calculateAnnualAverage(2019, 2, data);
   if (!floatEquality(expected, actual)) {
     fprintf(stderr, "Error in testing calculateAnnualAverage utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
     exit(-1);
   }
 
-  expected = ;
-  actual = calculateAnnualAverage(1948, 3);
+  expected = 78.751190;
+  actual = calculateAnnualAverage(2020, 5, data);
   if (!floatEquality(expected, actual)) {
     fprintf(stderr, "Error in testing calculateAnnualAverage utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
@@ -104,34 +102,26 @@ void testAnnualAverage() {
   }
 }
 
-void testMonthlyAverage() {
-  float expected[12], actual[12];
+void testMonthlyAverage(AnnualRainfall data[]) {
+  float actual[12] = {[0 ... 11] = 0};
 
-  expected = ;
-  actual = calculateMonthlyAverage(2016, 3);
-  if (!floatEquality(expected, actual)) {
-    fprintf(stderr, "Error in testing calculateMonthlyAverage utility\n");
-    printf("Expected: %f, received: %f\n", expected, actual);
+  float expected_one[] = {5.866240, 3.894746, 8.991137, 4.033412,
+                          9.553514, 5.922896, 6.118527, 4.098502,
+                          3.517697, 1.926963, 6.463065, 4.724165};
+  calculateMonthlyAverage(2016, 3, data, actual);
+  if (!arrayEquality(expected_one, actual, 12)) {
     exit(-1);
   }
 
-  expected = ;
-  actual = calculateMonthlyAverage(2020, 5);
-  if (!floatEquality(expected, actual)) {
-    fprintf(stderr, "Error in testing calculateMonthlyAverage utility\n");
-    printf("Expected: %f, received: %f\n", expected, actual);
-    exit(-1);
-  }
-
-  expected = ;
-  actual = calculateMonthlyAverage(2000, 2);
-  if (!floatEquality(expected, actual)) {
-    fprintf(stderr, "Error in testing calculateMonthlyAverage utility\n");
-    printf("Expected: %f, received: %f\n", expected, actual);
+  float expected_two[] = {5.910718, 5.441410, 7.767761, 6.763953,
+                          7.766268, 7.675056, 6.657271, 4.760959,
+                          5.433166, 5.221194, 8.597064, 6.859529};
+  calculateMonthlyAverage(2020, 5, data, actual);
+  if (!arrayEquality(expected_two, actual, 12)) {
     exit(-1);
   }
 }
-*/
+
 void test() {
   AnnualRainfall TWENTY_TWENTY_TEST_DATA = {
       .year = 2020,
@@ -151,9 +141,7 @@ void test() {
 
   testFilterAnnualData(data, TWENTY_TWENTY_TEST_DATA,
                        TWENTY_EIGHTEEN_TEST_DATA);
-  /*
-    testAnnualRainfall();
-    testAnnualAverage();
-    testMonthlyAverage();
-  */
+  testAnnualRainfall(data);
+  testAnnualAverage(data);
+  testMonthlyAverage(data);
 }
