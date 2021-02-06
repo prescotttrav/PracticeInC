@@ -18,15 +18,17 @@ void throwNegativeIntError(char func[]) {
   exit(-1);
 }
 
-// TODO update to recursion
 int gcd(int x, int y) {
+  int temp;
   if (x < 0 || y < 0)
     throwNegativeIntError("gcd");
-  int divisor = x < y ? x : y;
-  for (int n = divisor; n > 0; --n) {
-    if (x % n == 0 && y % n == 0)
-      return n;
+  while (y != 0) {
+    temp = x % y;
+    x = y;
+    y = temp;
   }
+
+  return x;
 }
 
 float absoluteValue(float x) {
