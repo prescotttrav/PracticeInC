@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+_Bool silent = 0;
+
+void quiet() {
+  silent = 1;
+}
+
+void verbose() {
+  silent = 0;
+}
+
 void throwNegativeIntError(char func[]) {
   fprintf(stderr, "Negatvie int supplied to positive-only arguments, in %s",
           func);
@@ -26,11 +36,24 @@ float absoluteValue(float x) {
 }
 
 float squareRoot(float x) {
-  return x;
+  float guess = 1.0;
+  float epsilon = .00001;
+
+  if (x < 0) {
+    if (!silent)
+      printf("Square root argument must be non-negative float.\n");
+    return -1;
+  }
+
+  while (absoluteValue(guess * guess - x) >= epsilon)
+    guess = (x / guess + guess) / 2;
+
+  return guess;
 }
 
 int main() {
   test();
+  verbose();
   int x, y, res;
   float z;
 

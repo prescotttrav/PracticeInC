@@ -40,7 +40,7 @@ void testGcd() {
     exit(-1);
   }
 
-  /* TODO throw -1
+  /* TODO exit -1
   expected = err;
   actual = gcd(24, -18);
   if (actual != expected) {
@@ -79,47 +79,45 @@ void testAbs() {
   }
 }
 
-/*
 void testSquareRoot() {
   float actual, expected;
 
-  expected = ;
-  actual = squareRoot();
+  expected = 2.0;
+  actual = squareRoot(4.0);
   if (!floatComparison(expected, actual)) {
     fprintf(stderr, "Error in testing squareRoots utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
     exit(-1);
   }
 
-  expected = ;
-  actual = squareRoot();
+  expected = 5.656854;
+  actual = squareRoot(32.0);
   if (!floatComparison(expected, actual)) {
     fprintf(stderr, "Error in testing squareRoots utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
     exit(-1);
   }
 
-  expected = ;
-  actual = squareRoot();
+  expected = -1;
+  actual = squareRoot(-2.0);
   if (!floatComparison(expected, actual)) {
     fprintf(stderr, "Error in testing squareRoots utility\n");
     printf("Expected: %f, received: %f\n", expected, actual);
     exit(-1);
   }
 
-  // TODO ints for this one
-  expected = ;
-  actual = squareRoot();
-  if (!floatComparison(expected, actual)) {
+  int expectedInt = 5;
+  int actualInt = squareRoot(25);
+  if (expectedInt != actualInt) {
     fprintf(stderr, "Error in testing squareRoots utility\n");
-    printf("Expected: %f, received: %f\n", expected, actual);
+    printf("Expected: %d, received: %d\n", expectedInt, actualInt);
     exit(-1);
   }
 }
-*/
 
 void test() {
+  quiet();
   testGcd();
   testAbs();
-  // testSquareRoot();
+  testSquareRoot();
 }
