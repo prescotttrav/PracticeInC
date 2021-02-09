@@ -1,4 +1,5 @@
 #include "../board.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +12,7 @@ void testBlankSpace() {
   if (strcmp(actual, expected) != 0) {
     fprintf(stderr, "Error in blankSpace utility.\n");
     printf("Expected: %s, received: %s.\n", expected, actual);
+    exit(1);
   }
 
   strcpy(expected, " ");
@@ -54,6 +56,14 @@ void testVerticalBoarder() {
 }
 
 void testInitializeBoard() {
+  char expected[BOARD_SIZE][BOARD_SIZE] = {
+      {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+  char actual[BOARD_SIZE][BOARD_SIZE];
+
+  initializeBoard(actual);
+  if (!matrixEquality(actual, expected, "initializeBoard\0")) {
+    exit(-1);
+  }
 }
 
 void testBoardUtilities() {
