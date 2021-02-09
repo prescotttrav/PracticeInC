@@ -2,6 +2,8 @@
 #include "main.h"
 #include "test/main.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 Coordinate convertPositionToCoordinate(int position) {
   Coordinate coord;
@@ -46,6 +48,7 @@ Coordinate collectUserCoordinate(char board[BOARD_SIZE][BOARD_SIZE]) {
   scanf("%d", &position);
 
   coord = convertPositionToCoordinate(position);
+
   while (!validateCoordinate(coord, board)) {
     printf("Invalid input, try entering a different number: ");
     scanf("%d", &position);
@@ -55,28 +58,63 @@ Coordinate collectUserCoordinate(char board[BOARD_SIZE][BOARD_SIZE]) {
   return coord;
 }
 
-/*
-void placeCoordinate(Coordinate coord, char symbol, char board[]) {
-  // Putting symbol in coord.row / col
+Coordinate autoGenerateCoordinate(char board[BOARD_SIZE][BOARD_SIZE]) {
+  Coordinate coord;
+  int position;
+
+  srand(time(NULL));
+
+  position = (int) rand() % (BOARD_SIZE * BOARD_SIZE + 1);
+  coord = convertPositionToCoordinate(position);
+
+  while (!validateCoordinate(coord, board)) {
+    position = (rand() % (BOARD_SIZE * BOARD_SIZE + 1));
+    coord = convertPositionToCoordinate(position);
+  }
+
+  return coord;
 }
 
-Coordinate autoGenerateCoordinate(char board[]) {
-  // Auto generating the other player by randomly creating variables from 0 - 2
+void placeCoordinate(Coordinate coord, char symbol,
+                     char board[BOARD_SIZE][BOARD_SIZE]) {
+  board[coord.row][coord.col] = symbol;
 }
 
-_Bool validateIsWinner(Coordinate coord, char symbol, char board[]) {
-  // recursive / graph API validate winner
+// RE DO
+_Bool validateIsWinner(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
+  return 0;
+  /*
+  Base case count == 3 || coord is out of range
+  */
 }
-*/
+
+void takeTurn(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
+  Coordinate coord;
+  if (symbol == 'X')
+    coord = collectUserCoordinate(board);
+  else
+    coord = autoGenerateCoordinate(board);
+  placeCoordinate(coord, symbol, board);
+  system("clear");
+  drawBoard(board);
+}
+
 int main() {
   test();
-  // retain counter
-  // define board
-  char board[BOARD_SIZE][BOARD_SIZE];
+  _Bool winner;
+  char symbol, board[BOARD_SIZE][BOARD_SIZE];
+  int counter = 0;
+
   initializeBoard(board);
   drawBoard(board);
 
-  collectUserCoordinate(board);
+  while (counter < BOARD_SIZE * BOARD_SIZE) {
+    symbol = counter % 2 == 0 ? 'X' : 'O';
+    takeTurn(symbol, board);
+    if (validateIsWinner(symbol, board))
+      break;
+    ++counter;
+  }
 
   return 0;
 }
