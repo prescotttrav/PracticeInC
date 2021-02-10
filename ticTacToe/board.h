@@ -1,5 +1,13 @@
 #define BOARD_SIZE 3
 
+enum Direction
+{
+  HORIZONTAL,
+  VERTICAL,
+  FORWARD_DIAG,
+  BACKWARD_DIAG
+};
+
 char *blankSpace();
 
 char verticalBoarder(int col);

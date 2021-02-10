@@ -1,5 +1,5 @@
-#ifndef HEADER_MAIN
-#define HEADER_MAIN
+#ifndef HEADER_BOARD
+#define HEADER_BOARD
 
 #include "board.h"
 
@@ -22,4 +22,11 @@ Coordinate collectUserCoordinate(char board[BOARD_SIZE][BOARD_SIZE]);
 
 Coordinate autoGenerateCoordinate(char board[BOARD_SIZE][BOARD_SIZE]);
 
-_Bool validateIsWinner(char symbol, char board[BOARD_SIZE][BOARD_SIZE]);
+_Bool validateIsWinner(Coordinate coord, char symbol,
+                       char board[BOARD_SIZE][BOARD_SIZE]);
+
+Coordinate advanceCoordinate(enum Direction dir, Coordinate coord);
+
+Coordinate retractCoordinate(enum Direction dir, Coordinate coord);
+
+_Bool coordIsOutOfBounds(Coordinate coord);
