@@ -1,5 +1,8 @@
+#include "../board.h"
+#include "../main.h"
 #include "../utils.h"
 #include "board.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,11 +1,4 @@
-#ifndef HEADER_BOARD
-#define HEADER_BOARD
-
 #include "board.h"
-
-#endif
-
-#include "main.h"
 #include <stdio.h>
 
 char *blankSpace() {

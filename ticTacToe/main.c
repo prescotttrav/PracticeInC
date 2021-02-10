@@ -1,6 +1,7 @@
 #include "board.h"
 #include "main.h"
 #include "test/main.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -64,7 +65,7 @@ Coordinate autoGenerateCoordinate(char board[BOARD_SIZE][BOARD_SIZE]) {
 
   srand(time(NULL));
 
-  position = (int) rand() % (BOARD_SIZE * BOARD_SIZE + 1);
+  position = (int)rand() % (BOARD_SIZE * BOARD_SIZE + 1);
   coord = convertPositionToCoordinate(position);
 
   while (!validateCoordinate(coord, board)) {
@@ -80,15 +81,100 @@ void placeCoordinate(Coordinate coord, char symbol,
   board[coord.row][coord.col] = symbol;
 }
 
-// RE DO
-_Bool validateIsWinner(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
-  return 0;
-  /*
-  Base case count == 3 || coord is out of range
-  */
+_Bool coordIsOutOfBounds(Coordinate coord) {
+  return coord.row >= BOARD_SIZE || coord.row < 0 || coord.col >= BOARD_SIZE ||
+         coord.col < 0;
 }
 
-void takeTurn(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
+Coordinate advanceCoordinate(enum Direction dir, Coordinate coord) {
+  switch (dir) {
+  case HORIZONTAL:
+    coord.col += 1;
+    break;
+  case VERTICAL:
+    coord.row += 1;
+    break;
+  case FORWARD_DIAG:
+    coord.row -= 1;
+    coord.col += 1;
+    break;
+  case BACKWARD_DIAG:
+    coord.row += 1;
+    coord.col += 1;
+    break;
+  }
+  return coord;
+}
+
+Coordinate retractCoordinate(enum Direction dir, Coordinate coord) {
+  switch (dir) {
+  case HORIZONTAL:
+    coord.col -= 1;
+    break;
+  case VERTICAL:
+    coord.row -= 1;
+    break;
+  case FORWARD_DIAG:
+    coord.row += 1;
+    coord.col -= 1;
+    break;
+  case BACKWARD_DIAG:
+    coord.row -= 1;
+    coord.col -= 1;
+    break;
+  }
+  return coord;
+}
+
+_Bool visitedCoordinate(Coordinate coord, Coordinate visited[]) {
+  for (int i = 0; i < BOARD_SIZE; ++i) {
+    if (coordinateEquality(coord, visited[i]))
+      return 1;
+  }
+  return 0;
+}
+
+int traverseBoard(int count, enum Direction dir, char symbol, Coordinate coord,
+                  int index, Coordinate visited[],
+                  char board[BOARD_SIZE][BOARD_SIZE]) {
+  Coordinate advanceCoord, retractCoord;
+  int total = 0;
+
+  if (board[coord.row][coord.col] != symbol)
+    return count;
+
+  advanceCoord = advanceCoordinate(dir, coord);
+  if (!coordIsOutOfBounds(advanceCoord) &&
+      !visitedCoordinate(advanceCoord, visited)) {
+    visited[index++] = advanceCoord;
+    total += traverseBoard(count + 1, dir, symbol, advanceCoord, index, visited,
+                           board);
+  }
+
+  retractCoord = retractCoordinate(dir, coord);
+  if (!coordIsOutOfBounds(retractCoord) &&
+      !visitedCoordinate(retractCoord, visited)) {
+    visited[index++] = retractCoord;
+    total += traverseBoard(count + 1, dir, symbol, retractCoord, index, visited,
+                           board);
+  }
+
+  return total;
+}
+
+_Bool validateIsWinner(Coordinate coord, char symbol,
+                       char board[BOARD_SIZE][BOARD_SIZE]) {
+  for (int i = HORIZONTAL; i <= BACKWARD_DIAG; ++i) {
+    Coordinate visited[BOARD_SIZE] = {
+        [0] = coord, [1 ... BOARD_SIZE - 1] = {.row = -1, .col = -1}};
+    int count = traverseBoard(0, i, symbol, coord, 1, visited, board);
+    if (count == 3)
+      return 1;
+  }
+  return 0;
+}
+
+Coordinate takeTurn(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
   Coordinate coord;
   if (symbol == 'X')
     coord = collectUserCoordinate(board);
@@ -97,21 +183,23 @@ void takeTurn(char symbol, char board[BOARD_SIZE][BOARD_SIZE]) {
   placeCoordinate(coord, symbol, board);
   system("clear");
   drawBoard(board);
+
+  return coord;
 }
 
 int main() {
   test();
   _Bool winner;
-  char symbol, board[BOARD_SIZE][BOARD_SIZE];
+  char board[BOARD_SIZE][BOARD_SIZE];
   int counter = 0;
 
   initializeBoard(board);
   drawBoard(board);
 
   while (counter < BOARD_SIZE * BOARD_SIZE) {
-    symbol = counter % 2 == 0 ? 'X' : 'O';
-    takeTurn(symbol, board);
-    if (validateIsWinner(symbol, board))
+    char symbol = counter % 2 == 0 ? 'X' : 'O';
+    Coordinate coord = takeTurn(symbol, board);
+    if (validateIsWinner(coord, symbol, board))
       break;
     ++counter;
   }

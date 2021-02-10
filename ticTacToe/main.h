@@ -1,9 +1,7 @@
-#ifndef HEADER_BOARD
-#define HEADER_BOARD
+#ifndef HEADER_MAIN
+#define HEADER_MAIN
 
 #include "board.h"
-
-#endif
 
 typedef struct {
   int col, row;
@@ -30,3 +28,5 @@ Coordinate advanceCoordinate(enum Direction dir, Coordinate coord);
 Coordinate retractCoordinate(enum Direction dir, Coordinate coord);
 
 _Bool coordIsOutOfBounds(Coordinate coord);
+
+#endif

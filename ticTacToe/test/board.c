@@ -1,4 +1,5 @@
-#include "board.h"
+#include "../board.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
