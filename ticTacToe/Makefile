@@ -7,3 +7,8 @@ OBJ=main.o board.o test/main.o test/board.o test/utils.o
 
 tictactoe: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
+
+.PHONY: clean
+
+clean:
+	rm -f *.o test/*.o tictactoe 
