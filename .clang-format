@@ -28,3 +28,11 @@ SpacesInConditionalStatement: false
 SpacesInContainerLiterals: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
+---
+Language: ObjC
+---
+Language: CSharp
+---
+Language: JavaScript
+---
+Language: Java
