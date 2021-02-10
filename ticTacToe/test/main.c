@@ -557,6 +557,7 @@ void testCoordIsOutOfBounds() {
   }
 }
 
+// TODO more testing cases!
 void testValidateIsWinner() {
   _Bool actual, expected;
   Coordinate coord;
@@ -576,20 +577,6 @@ void testValidateIsWinner() {
   }
 }
 
-/*
-void testPlaceCoordinate() {
-}
-
-void testCollectUserCoordinate() {
-}
-
-void testAutoGenerateCoordinate() {
-}
-
-void testValidateIsWinner() {
-}
-*/
-
 void test() {
   testBoardUtilities();
   testConvertPositionToCoordinate();
@@ -599,11 +586,4 @@ void test() {
   testRetractCoordinate();
   testCoordIsOutOfBounds();
   testValidateIsWinner();
-  /*
-  testPlaceCoordinate();
-  testValidateCoordinate();
-  testCollectUserCoordinate();
-  testAutoGenerateCoordinate();
-  testValidateIsWinner();
-  */
 }

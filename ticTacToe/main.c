@@ -6,6 +6,25 @@
 #include <stdlib.h>
 #include <time.h>
 
+void gameTitle() {
+  printf("\n__   __     _                             _______ _        _______ "
+         "          _______         \n");
+  printf(
+      "\\ \\ / /    | |                           |__   __(_)      |__   __|  "
+      "       |__   __|        \n");
+  printf(" \\ V /_____| |_ _ __ ___ _ __ ___   ___     | |   _  ___     | | __ "
+         "_  ___     | | ___   ___ \n");
+  printf(
+      "  > <______| __| '__/ _ \\ '_ ` _ \\ / _ \\    | |  | |/ __|    | |/ _` "
+      "|/ __|    | |/ _ \\ / _ \\\n");
+  printf(
+      " / . \\     | |_| | |  __/ | | | | |  __/    | |  | | (__     | | (_| "
+      "| (__     | | (_) |  __/\n");
+  printf("/_/ \\_\\     \\__|_|  \\___|_| |_| |_|\\___|    |_|  |_|\\___|    "
+         "|_|\\__,_|\\___|    |_|\\___/ \\___|\n\n");
+  printf("Press any key to begin...\n");
+}
+
 Coordinate convertPositionToCoordinate(int position) {
   Coordinate coord;
 
@@ -138,37 +157,36 @@ int traverseBoard(int count, enum Direction dir, char symbol, Coordinate coord,
                   int index, Coordinate visited[],
                   char board[BOARD_SIZE][BOARD_SIZE]) {
   Coordinate advanceCoord, retractCoord;
-  int total = 0;
+  int advancedTotal, retractedTotal;
+  advancedTotal = retractedTotal = 0;
 
-  if (board[coord.row][coord.col] != symbol)
+  if (board[coord.row][coord.col] != symbol || coordIsOutOfBounds(coord))
     return count;
 
   advanceCoord = advanceCoordinate(dir, coord);
-  if (!coordIsOutOfBounds(advanceCoord) &&
-      !visitedCoordinate(advanceCoord, visited)) {
+  if (!visitedCoordinate(advanceCoord, visited)) {
     visited[index++] = advanceCoord;
-    total += traverseBoard(count + 1, dir, symbol, advanceCoord, index, visited,
-                           board);
+    advancedTotal = traverseBoard(count + 1, dir, symbol, advanceCoord, index,
+                                  visited, board);
   }
 
   retractCoord = retractCoordinate(dir, coord);
-  if (!coordIsOutOfBounds(retractCoord) &&
-      !visitedCoordinate(retractCoord, visited)) {
+  if (!visitedCoordinate(retractCoord, visited)) {
     visited[index++] = retractCoord;
-    total += traverseBoard(count + 1, dir, symbol, retractCoord, index, visited,
-                           board);
+    retractedTotal = traverseBoard(count + 1, dir, symbol, retractCoord, index,
+                                   visited, board);
   }
 
-  return total;
+  return advancedTotal + retractedTotal;
 }
 
 _Bool validateIsWinner(Coordinate coord, char symbol,
                        char board[BOARD_SIZE][BOARD_SIZE]) {
   for (int i = HORIZONTAL; i <= BACKWARD_DIAG; ++i) {
-    Coordinate visited[BOARD_SIZE] = {
+    Coordinate visited[BOARD_SIZE * BOARD_SIZE] = {
         [0] = coord, [1 ... BOARD_SIZE - 1] = {.row = -1, .col = -1}};
     int count = traverseBoard(0, i, symbol, coord, 1, visited, board);
-    if (count == 3)
+    if (count - 1 == BOARD_SIZE)
       return 1;
   }
   return 0;
@@ -193,14 +211,18 @@ int main() {
   char board[BOARD_SIZE][BOARD_SIZE];
   int counter = 0;
 
+  gameTitle();
+
   initializeBoard(board);
   drawBoard(board);
 
   while (counter < BOARD_SIZE * BOARD_SIZE) {
     char symbol = counter % 2 == 0 ? 'X' : 'O';
     Coordinate coord = takeTurn(symbol, board);
-    if (validateIsWinner(coord, symbol, board))
+    if (validateIsWinner(coord, symbol, board)) {
+      // TODO winner text!
       break;
+    }
     ++counter;
   }
 

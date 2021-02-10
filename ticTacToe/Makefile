@@ -3,10 +3,10 @@ DEPS=main.h board.h utils.h test/main.h test/board.h test/utils.h
 OBJ=main.o board.o utils.o test/main.o test/board.o test/utils.o
 
 %.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -g -c -o $@ $< $(CFLAGS)
 
 tictactoe: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -g -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 
