@@ -1,6 +1,6 @@
 CC=gcc
-DEPS=main.h board.h utils.h test/main.h test/board.h test/utils.h
-OBJ=main.o board.o utils.o test/main.o test/board.o test/utils.o
+DEPS=main.h board.h display.h playerMove.h position.h utils.h validateWinner.h 
+OBJ=main.o board.o display.o playerMove.o position.o utils.o validateWinner.o
 
 %.o: %.c $(DEPS)
 	$(CC) -g -c -o $@ $< $(CFLAGS)

@@ -3,20 +3,15 @@
 
 #define BOARD_SIZE 3
 
-enum Direction
-{
-  HORIZONTAL,
-  VERTICAL,
-  FORWARD_DIAG,
-  BACKWARD_DIAG
-};
-
-char *blankSpace();
-
-char verticalBoarder(int col);
-
-void drawBoard(char board[BOARD_SIZE][BOARD_SIZE]);
+#include "position.h"
 
 void initializeBoard(char board[BOARD_SIZE][BOARD_SIZE]);
+
+_Bool outOfBoardBounds(int displayValue);
+
+void placeSymbolOnBoard(Position p, char symbol,
+                        char board[BOARD_SIZE][BOARD_SIZE]);
+
+_Bool positionIsOutOfBoardBounds(Position p);
 
 #endif
