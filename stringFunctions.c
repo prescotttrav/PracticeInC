@@ -33,6 +33,16 @@ _Bool strequality(char str1[], char str2[]) {
     return 0;
 }
 
+void reverseString(char str[], char rev[]) {
+  int i;
+  int length = strlen(str);
+
+  for (i = 0; i < length; ++i) {
+    rev[i] = str[length - i - 1];
+  }
+  rev[i] = '\0';
+}
+
 int main() {
   char str[] = "Hello";
   assert(strlength(str) == 5);
@@ -46,5 +56,8 @@ int main() {
   char str2[] = "this is number o";
   assert(strequality(str1, str2) == 0);
 
+  char rev[6];
+  reverseString(str, rev);
+  assert(strcmp(rev, "olleH") == 0);
   return 0;
 }
