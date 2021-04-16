@@ -12,7 +12,6 @@ int main(int argc, char **argv) {
   f = fopen(argv[1], "w");
 
   if (f == 0) {
-    puts("hit this");
     perror(argv[1]);
     exit(2);
   }
