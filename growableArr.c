@@ -19,6 +19,13 @@ enum nv
   GROW,
 };
 
+void free_dynamic_arr(struct nv_tab tab) {
+  for (int i = 0; i < tab.n; i++) {
+    free(tab.name_val[i].name);
+  }
+  free(tab.name_val);
+}
+
 struct nameval create_nameval(char *name, int val) {
   struct nameval new_name = {NULL, val};
 
@@ -68,6 +75,19 @@ struct nv_tab add_name(struct nv_tab nv, struct nameval new_name) {
   return nv;
 }
 
+struct nv_tab del_name(struct nv_tab nv, char *name) {
+  for (int i = 0; i < nv.n; i++) {
+    if (strcmp(name, nv.name_val[i].name) == 0) {
+      free(nv.name_val[i].name);
+      memmove(nv.name_val + i, nv.name_val + i + 1,
+              (nv.n - (i + 1)) * sizeof(struct nameval));
+      nv.n--;
+      break;
+    }
+  }
+  return nv;
+}
+
 int main(void) {
   struct nameval a, b, c, d, e;
   struct nv_tab tab = {0, 0, NULL};
@@ -81,11 +101,16 @@ int main(void) {
   c = create_nameval("singapore", 9);
   tab = add_name(tab, c);
 
+  tab = del_name(tab, "hello");
+  tab = del_name(tab, "nothing");
+  tab = del_name(tab, "singapore");
+
   d = create_nameval("gui", 3);
   tab = add_name(tab, d);
 
   e = create_nameval("adios", 5);
   tab = add_name(tab, e);
 
+  free_dynamic_arr(tab);
   return 0;
 }
