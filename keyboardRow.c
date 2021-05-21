@@ -1,4 +1,6 @@
 /* Author: Prescott J. Traversi
+ * Source: https://leetcode.com/problems/keyboard-row/
+ *
  * Given an array of strings words, return the words that can be typed using
  * letters of the alphabet on only one row of American keyboard like the image
  * below.
@@ -12,9 +14,9 @@
 
 #include <assert.h>
 
-#define INIT_ALPHA 97
-
 /* --------------------------------- problem -------------------------------- */
+
+#define INIT_ALPHA 97
 
 static int indexof(char c) {
   return tolower(c) - INIT_ALPHA;

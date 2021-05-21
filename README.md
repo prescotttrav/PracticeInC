@@ -1,3 +1,3 @@
 # Practice In C
 
-A conglomerate of simple programs written in C.
+A conglomerate of LeetCode solutions written in C.
