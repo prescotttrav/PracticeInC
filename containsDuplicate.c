@@ -96,12 +96,7 @@ static void cpyarr(int to[], int from[], int n) {
 }
 
 int main(void) {
-  testCase test = {
-      {0},   // input
-      0,     // numSize
-      0,     // expected
-      0,     // actual
-  };
+  testCase test;
 
   // TEST CASE 1
   test.numSize = 4;
