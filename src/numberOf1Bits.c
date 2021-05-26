@@ -4,7 +4,7 @@
  * Write a function that takes an unsigned integer and returns the number of '1'
  * bits it has (also known as the Hamming weight).
  *
- * Time: O(1) - 32 bit constant
+ * Time: O(1)
  * Space: O(1)
  */
 #include <inttypes.h>
@@ -13,15 +13,11 @@
 
 /* --------------------------------- problem -------------------------------- */
 
-#define BITS 32
-
 int hammingWeight(uint32_t n) {
   int bits = 0;
-  uint32_t mask = 1;
-  for (int i = 0; i < BITS; i++) {
-    if (n & mask)
-      ++bits;
-    mask <<= 1;
+  while (n) {
+    ++bits;
+    n = n & (n - 1);
   }
   return bits;
 }
