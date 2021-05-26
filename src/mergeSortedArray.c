@@ -13,39 +13,9 @@
 
 /* --------------------------------- problem -------------------------------- */
 
-typedef struct Node {
-  int val;
-  struct Node *next;
-} Node;
-
-static Node *pop(Node **top) {
-  if (!*top)
-    return NULL;
-  Node *n = *top;
-  *top = (*top)->next;
-  return n;
-}
-
-static Node *newNode(int val) {
-  Node *n = malloc(sizeof(Node));
-  assert(n);
-  n->val = val;
-  n->next = NULL;
-  return n;
-}
-
-static void push(Node **top, int val) {
-  Node *n = newNode(val);
-  if (*top)
-    n->next = *top;
-  *top = n;
-}
-
-static void cpy(int *to, Node *from, int n) {
-  for (int i = n; i > 0; i--) {
-    Node *n = pop(&from);
-    to[i - 1] = n ? n->val : -1;
-  }
+static void cpy(int *to, int *from, int n) {
+  for (int i = 0; i < n; i++)
+    to[i] = from[i];
 }
 
 static _Bool isLess(int x, int y) {
@@ -53,23 +23,24 @@ static _Bool isLess(int x, int y) {
 }
 
 void merge(int *nums1, int nums1Size, int m, int *nums2, int nums2Size, int n) {
-  Node *stack = NULL;
+  int res[m + n];
   int i = 0;
   int j = 0;
+  int k = 0;
   while (i < m && j < n) {
     if (isLess(nums1[i], nums2[j])) {
-      push(&stack, nums1[i++]);
+      res[k++] = nums1[i++];
     } else {
-      push(&stack, nums2[j++]);
+      res[k++] = nums2[j++];
     }
   }
   while (i < m) {
-    push(&stack, nums1[i++]);
+    res[k++] = nums1[i++];
   }
   while (j < n) {
-    push(&stack, nums2[j++]);
+    res[k++] = nums2[j++];
   }
-  cpy(nums1, stack, m + n);
+  cpy(nums1, res, m + n);
 }
 
 /* --------------------------------- testing -------------------------------- */
