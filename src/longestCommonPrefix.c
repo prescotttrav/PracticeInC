@@ -87,6 +87,7 @@ static void freeTestCase(testCase t) {
     free(t.input[i]);
   }
   free(t.input);
+  free(t.actual);
 }
 
 int main(void) {
