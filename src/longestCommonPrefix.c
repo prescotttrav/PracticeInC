@@ -4,8 +4,8 @@
  * Write a function to find the longest common prefix string amongst an array of
  * strings.
  *
- * Time: O(n lg n)
- * Space: O(lg n)
+ * Time: O(n)
+ * Space: O(1)
  */
 #include <stdlib.h>
 #include <string.h>
@@ -14,32 +14,44 @@
 
 /* --------------------------------- problem -------------------------------- */
 
-static int strCmp(const void *s1, const void *s2) {
-  return strcmp(*(char **) s1, *(char **) s2);
+static char *getmin(char **strs, int strsSize) {
+  char *min = strs[0];
+  for (int i = 1; i < strsSize; i++) {
+    if (strcmp(min, strs[i]) > 0)
+      min = strs[i];
+  }
+  return min;
+}
+
+static char *getmax(char **strs, int strsSize) {
+  char *max = strs[0];
+  for (int i = 1; i < strsSize; i++) {
+    if (strcmp(max, strs[i]) < 0)
+      max = strs[i];
+  }
+  return max;
 }
 
 static int getlen(char *s1, char *s2) {
-  int l1 = strlen(s1);
-  int l2 = strlen(s2);
-  return l1 < l2 ? l1 : l2;
-}
-
-static _Bool charcmp(char **strs, int low, int high, int k) {
-  return strs[low][k] == strs[high][k];
+  int i = 0;
+  while (*s1++ && *s2++) {
+    i++;
+  }
+  return i;
 }
 
 char *longestCommonPrefix(char **strs, int strsSize) {
-  int len, i;
-  i = 0;
+  int i;
   char *res = NULL;
+  char *min = getmin(strs, strsSize);
+  char *max = getmax(strs, strsSize);
+  int len = getlen(min, max);
+  res = malloc(sizeof(char) * (len + 1));
+  assert(res);
 
-  qsort(strs, strsSize, sizeof(char *), strCmp);
-  len = getlen(strs[0], strs[strsSize - 1]);
-  res = malloc(sizeof(char) * len + 1);
-
-  for (int j = 0; j < len; j++) {
-    if (charcmp(strs, 0, strsSize - 1, j)) {
-      res[i++] = strs[0][j];
+  for (i = 0; i < len; i++) {
+    if (min[i] == max[i]) {
+      res[i] = min[i];
     } else {
       break;
     }
@@ -79,6 +91,8 @@ static void freeTestCase(testCase t) {
 
 int main(void) {
   testCase test;
+
+  // TEST CASE 1
   test.size = 3;
   test.input = buildInput((char *[]){"flower", "flow", "flight"}, test.size);
   test.expected = "fl";
@@ -87,6 +101,7 @@ int main(void) {
   assert(strcmp(test.actual, test.expected) == 0);
   freeTestCase(test);
 
+  // TEST CASE 2
   test.size = 3;
   test.input = buildInput((char *[]){"reflower", "flow", "flight"}, test.size);
   test.expected = "";
@@ -95,6 +110,7 @@ int main(void) {
   assert(strcmp(test.actual, test.expected) == 0);
   freeTestCase(test);
 
+  // TEST CASE 3
   test.size = 1;
   test.input = buildInput((char *[]){"a"}, test.size);
   test.expected = "a";
