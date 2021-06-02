@@ -3,39 +3,31 @@
  *
  * Given an array nums of size n, return the majority element.
  *
- * Time: O(nlgn)
+ * Time: O(∞) -> Average case: O(n)
  * Space: O(1)
  */
 #include <stdlib.h>
 
 #include <assert.h>
+#include <time.h>
 
 /* --------------------------------- problem -------------------------------- */
 
-static int countRange(int *nums, int lo, int hi, int val) {
-  int count = 0;
-  for (int i = lo; i <= hi; i++) {
-    if (nums[i] == val)
-      ++count;
-  }
-  return count;
-}
-
-static int majorityHelper(int *nums, int lo, int hi) {
-  if (lo == hi)
-    return nums[lo];
-  int mid = (lo + hi) / 2;
-  int left = majorityHelper(nums, lo, mid);
-  int right = majorityHelper(nums, mid + 1, hi);
-  if (left == right)
-    return left;
-  int leftCount = countRange(nums, lo, hi, left);
-  int rightCount = countRange(nums, lo, hi, right);
-  return leftCount > rightCount ? left : right;
-}
-
 int majorityElement(int *nums, int numsSize) {
-  return majorityHelper(nums, 0, numsSize - 1);
+  int majorityVal = numsSize / 2 + 1;
+  time_t t;
+  srand((unsigned) time(&t));
+
+  while (1) {
+    int count = 0;
+    int idx = rand() % numsSize;
+    for (int i = 0; i < numsSize; i++) {
+      if (nums[idx] == nums[i])
+        ++count;
+    }
+    if (count >= majorityVal)
+      return nums[idx];
+  }
 }
 
 /* --------------------------------- testing -------------------------------- */
