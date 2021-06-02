@@ -3,97 +3,39 @@
  *
  * Given an array nums of size n, return the majority element.
  *
- * Time: O(n)
- * Space: O(n)
+ * Time: O(nlgn)
+ * Space: O(1)
  */
 #include <stdlib.h>
 
 #include <assert.h>
-#include <math.h>
-
-/* ---------------------------- hashmap functions  -------------------------- */
-
-typedef struct HashNode {
-  int key;
-  int val;
-  struct HashNode *next;
-} HashNode;
-
-typedef struct Hashmap {
-  int size;
-  HashNode **table;
-} Hashmap;
-
-static void initMap(Hashmap *m, int size) {
-  m->size = size;
-  m->table = malloc(sizeof(HashNode *) * size);
-  assert(m->table);
-  for (int i = 0; i < size; i++)
-    m->table[i] = NULL;
-}
-
-static void destroyMap(Hashmap *m) {
-  for (int i = 0; i < m->size; i++) {
-    HashNode *n = m->table[i];
-    while (n != NULL) {
-      HashNode *temp = n;
-      n = n->next;
-      free(temp);
-    }
-  }
-  free(m->table);
-}
-
-static int hash(Hashmap *m, int key) {
-  return abs(key % m->size);
-}
-
-static HashNode *get(Hashmap *m, int key) {
-  int idx = hash(m, key);
-  HashNode *n = m->table[idx];
-  while (n != NULL && n->key != key) {
-    n = n->next;
-  }
-  return n;
-}
-
-static HashNode *newNode(int key, int val) {
-  HashNode *n = malloc(sizeof(HashNode));
-  assert(n);
-  n->key = key;
-  n->val = val;
-  n->next = NULL;
-  return n;
-}
-
-static HashNode *add(Hashmap *m, int key, int val) {
-  int idx = hash(m, key);
-  HashNode *n = newNode(key, val);
-  n->next = m->table[idx];
-  m->table[idx] = n;
-  return n;
-}
 
 /* --------------------------------- problem -------------------------------- */
 
-static int majorityElement(int *nums, int numsSize) {
-  Hashmap m;
-  initMap(&m, numsSize);
-  int res = -1;
-  int majority = numsSize / 2 + 1;
-  for (int i = 0; i < numsSize; i++) {
-    HashNode *n = get(&m, nums[i]);
-    if (n == NULL) {
-      n = add(&m, nums[i], 0);
-    }
-    n->val += 1;
-    if (n->val >= majority) {
-      res = n->key;
-      break;
-    }
+static int countRange(int *nums, int lo, int hi, int val) {
+  int count = 0;
+  for (int i = lo; i <= hi; i++) {
+    if (nums[i] == val)
+      ++count;
   }
-  destroyMap(&m);
-  return res;
+  return count;
+}
+
+static int majorityHelper(int *nums, int lo, int hi) {
+  if (lo == hi)
+    return nums[lo];
+  int mid = (lo + hi) / 2;
+  int left = majorityHelper(nums, lo, mid);
+  int right = majorityHelper(nums, mid + 1, hi);
+  if (left == right)
+    return left;
+  int leftCount = countRange(nums, lo, hi, left);
+  int rightCount = countRange(nums, lo, hi, right);
+  return leftCount > rightCount ? left : right;
+}
+
+int majorityElement(int *nums, int numsSize) {
+  return majorityHelper(nums, 0, numsSize - 1);
 }
 
 /* --------------------------------- testing -------------------------------- */
