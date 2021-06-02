@@ -3,31 +3,22 @@
  *
  * Given an array nums of size n, return the majority element.
  *
- * Time: O(∞) -> Average case: O(n)
+ * Time: O(n)
  * Space: O(1)
  */
-#include <stdlib.h>
-
 #include <assert.h>
-#include <time.h>
 
 /* --------------------------------- problem -------------------------------- */
 
 int majorityElement(int *nums, int numsSize) {
-  int majorityVal = numsSize / 2 + 1;
-  time_t t;
-  srand((unsigned) time(&t));
-
-  while (1) {
-    int count = 0;
-    int idx = rand() % numsSize;
-    for (int i = 0; i < numsSize; i++) {
-      if (nums[idx] == nums[i])
-        ++count;
-    }
-    if (count >= majorityVal)
-      return nums[idx];
+  int res = -1;
+  int count = 0;
+  for (int i = 0; i < numsSize; i++) {
+    if (count == 0)
+      res = nums[i];
+    count += nums[i] == res ? 1 : -1;
   }
+  return res;
 }
 
 /* --------------------------------- testing -------------------------------- */
